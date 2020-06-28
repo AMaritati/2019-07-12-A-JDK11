@@ -7,6 +7,7 @@ package it.polito.tdp.food;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.food.model.Food;
 import it.polito.tdp.food.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +42,7 @@ public class FoodController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxFood"
-    private ComboBox<?> boxFood; // Value injected by FXMLLoader
+    private ComboBox<Food> boxFood; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -49,7 +50,20 @@ public class FoodController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Creazione grafo...");
+    	this.boxFood.getItems().clear();
+    	int x ;
+    	try {
+    		x = Integer.parseInt(txtPorzioni.getText());
+    		model.creaGrafo(x);
+        	this.boxFood.getItems().addAll(model.getFoods());
+        	
+        	txtResult.setText(String.format("GRAFO CREATO!\n # %d VERTICI \n # %d ARCHI\n", model.nVertici(),model.nArchi()));
+        	
+    	} catch (Throwable t){
+    		txtResult.appendText("Errore nell'input!");
+    		return;
+    	}
+    	
     }
     
     @FXML
